@@ -1,0 +1,45 @@
+{% extends 'index.html' %}
+{% block table_content %}
+    <h3>学员报名| 合同审核</h3>
+    <hr>
+    <form class="form-horizontal" method="post" onsubmit="RemoveDisabled(this)">
+        {% csrf_token %}
+        {% for field in customer_form %}
+            <div class="form-group col-lg-6">
+                <label for="inputEmail3" class="col-sm-2 control-label">{{ field.label }}</label>
+                <div class="col-sm-9">
+                    {{ field }}
+                     <p style="color: indianred">{{ field.errors }}</p>
+                </div>
+            </div>
+        {% endfor %}
+        {% for field in enrollment_form %}
+            <div class="form-group col-lg-6">
+                <label for="inputEmail3" class="col-sm-2 control-label">{{ field.label }}</label>
+                <div class="col-sm-9">
+                    {{ field }}
+                    <p style="color: indianred">{{ field.errors }}</p>
+                </div>
+            </div>
+
+        {% endfor %}
+        <div class="container">
+        <div class="col-lg-11" style="border: 1px solid #e1e1e1;margin-bottom: 10px">
+        证件信息：
+            {% for confirm_img in confirm_img_list %}
+                <img src="/static/enrollment_data/{{ enrollment_obj_id }}/{{ confirm_img }}"
+                     style="height: 300px;width: 400px;margin-left: 20px" class="img-thumbnail" >
+            {% endfor %}
+        </div>
+        <div class="col-lg-11">
+            <button class="btn btn-danger">报名驳回</button>
+            <input type="submit" class="btn btn-warning pull-right" value="审核通过">
+            </div>
+        </div>
+    </form>
+    <script>
+        function RemoveDisabled(ele) {
+            $(':disabled').removeAttr('disabled');
+        }
+    </script>
+{% endblock %}

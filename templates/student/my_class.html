@@ -1,0 +1,48 @@
+{% extends 'index.html' %}
+{% block css %}
+    <style>
+        .study-record span {
+            font-size: 20px;
+        }
+    </style>
+{% endblock %}
+{% load student_tags %}
+{% block table_content %}
+    <h1 class="page-header">我的班级</h1>
+    <div class="container study-record">
+
+        <span style="color: chocolate;" class="pull-right">班级列表</span>
+        {% for class ,students in students_list.items %}
+            <h3 style="color: chocolate"><i class="glyphicon glyphicon-align-left">&nbsp;</i>{{ class }}</h3>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>上课节次</th>
+                    <th>联系方式类型</th>
+                    <th>联系方式</th>
+                    <th>成绩排名</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for student in students %}
+                    {% if request.user.userprofile.customer.name == student.customer.name %}
+                        <tr style="color: indianred;font-weight: bold">
+                    {% endif %}
+                    <td>{{ student.customer.name }}</td>
+                    <td>{{ student.customer.get_gender_display }}</td>
+                    <td>{% get_had_student_class student class %}</td>
+                    <td>{{ student.customer.get_contact_type_display }}</td>
+                    <td>{{ student.customer.contact }}</td>
+                    <td>{% get_score_ranking student class %}</td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        {% endfor %}
+
+
+    </div>
+{% endblock %}

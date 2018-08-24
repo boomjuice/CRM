@@ -1,0 +1,66 @@
+{% extends 'index.html' %}
+{% block css %}
+    <style>
+        .study-record span {
+            font-size: 20px;
+        }
+    </style>
+{% endblock %}
+{% load teacher_tags %}
+{% block table_content %}
+    <h1 class="page-header">上课记录</h1>
+    <div class="container study-record">
+        <ol class="breadcrumb">
+            <li><a href="{% url 'my_class' %}">我的班级</a></li>
+            <li class="active">上课记录</li>
+        </ol>
+    <div class="row">
+        <div style="color: #4d764a;" class="col-md-10">
+            <h3><i class="glyphicon glyphicon-globe">&nbsp;</i>{{ class_grade }}</h3>
+        </div>
+        <div class="col-md-1" style="line-height: 64px;margin-left: 40px">
+            <a href="/teacher/courses-record/{{ class_id }}/add/" class="btn btn-success">新建上课记录</a>
+        </div>
+    </div>
+        <hr>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>节次</th>
+                <th>上课主题</th>
+                <th>本节内容</th>
+                <th>本节作业</th>
+                <th>上课时间</th>
+                <th>布置作业</th>
+                <th>更多记录</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for record in record_list %}
+                <tr>
+                    <td>{{ record.day_num }}</td>
+                    <td>{{ record.title }}</td>
+                    <td style="width: 300px">{{ record.content }}</td>
+                    {% if record.has_homework %}
+                        <td>有</td>
+                    {% else %}
+                        <td>无</td>
+                    {% endif %}
+                    <td>{{ record.date }}</td>
+                    {% if  record.has_homework %}
+                        {% if not record.homework %}
+                            <td style="width: 300px;"><a href="/student/upload-homework/{{ study_record.id }}">布置作业</a></td>
+                        {% else %}
+                            <td style="width: 300px;">{{ record.homework }}</td>
+                        {% endif %}
+                        {% else %}
+                        <td style="width: 300px;"></td>
+                    {% endif %}
+                    <td><a href="">更改记录</a></td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

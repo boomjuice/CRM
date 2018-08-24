@@ -1,0 +1,46 @@
+{% extends 'index.html' %}
+{% block css %}
+    <style>
+        .study-record span {
+            font-size: 20px;
+        }
+    </style>
+{% endblock %}
+{% load teacher_tags %}
+{% block table_content %}
+    <h1 class="page-header">我的班级</h1>
+    <div class="container study-record">
+        <ol class="breadcrumb">
+            <li class="active">我的班级</li>
+        </ol>
+        <hr>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>班级(学期)</th>
+                <th>类型</th>
+                <th>开课时间</th>
+                <th>开课总节次</th>
+                <th>已上节次</th>
+                <th>学员数量</th>
+                <th>上课记录</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for class in class_list %}
+                <tr>
+                    <td>{{ class }}</td>
+                    <td>{{ class.get_class_type_display }}</td>
+                    <td>{{ class.start_date }}</td>
+                    <td>{{ class.courserecord_set.count }}</td>
+                    <td>{% get_had_class class request.user %}</td>
+                    <td><a href="/teacher/my-class/{{ class.id }}/student-list/">{{ class.student_set.count }}</a></td>
+                    <td><a href="/teacher/courses-record/{{ class.id }}/">上课记录</a></td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+{% block css %}
+    <style>
+        .study-record span{
+            font-size: 20px;
+        }
+    </style>
+{% endblock %}
+{% block table_content %}
+    <h1 class="page-header">作业管理</h1>
+    <div class="container study-record">
+    <ol class="breadcrumb">
+            <li><a href="{% url 'my_courses' %}">我的课程</a></li>
+            <li class="active">作业管理</li>
+        </ol>
+    <span style="color:indianred;">我的课程[{{ class_grade }}]</span>
+
+        <span  style="color: indianred;" class="pull-right">学习记录</span>
+        <hr>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>日期</th>
+                <th>节次</th>
+                <th>本节讲师</th>
+                <th>上课记录</th>
+                <th>本节成绩</th>
+                <th>作业内容</th>
+                <th>我的作业</th>
+            </tr>
+        </thead>
+    <tbody>
+        {% for study_record in study_record_list %}
+            <tr>
+                <td>{{ study_record.date | date }}</td>
+                <td>{{ study_record.course_record.day_num}}</td>
+                <td>{{ study_record.course_record.teacher }}</td>
+                <td>{{ study_record.get_show_status_display }}</td>
+                <td>{{ study_record.get_score_display }}</td>
+                {% if study_record.course_record.has_homework %}
+                    <td>{{ study_record.course_record.homework }}</td>
+                    <td><a href="/student/upload-homework/{{ study_record.id }}">交作业</a></td>
+                    {% else %}
+                    <td> 没有作业</td>
+                    <td> </td>
+                {% endif %}
+
+
+            </tr>
+        {% endfor %}
+
+    </tbody>
+    </table>
+    </div>
+{% endblock %}

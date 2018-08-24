@@ -1,0 +1,54 @@
+{% extends 'index.html' %}
+{% block css %}
+    <style>
+        .study-record span {
+            font-size: 20px;
+        }
+    </style>
+{% endblock %}
+{% load teacher_tags %}
+{% load student_tags %}
+{% block table_content %}
+    <h1 class="page-header">我的班级</h1>
+    <div class="container study-record">
+        <ol class="breadcrumb">
+            <li><a href="{% url 'my_class' %}">我的班级</a></li>
+            <li class="active">班级学员列表</li>
+        </ol>
+        <hr>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>学员(id)</th>
+                <th>联系方式类型</th>
+                <th>联系方式</th>
+                <th>姓名</th>
+                <th>报名日期</th>
+                <th>班级排名</th>
+                <th>出勤次数</th>
+                <th>迟到次数</th>
+                <th>缺勤次数</th>
+                <th>上课记录</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in students_list %}
+                <tr>
+                    <td>{{ student.id }}</td>
+                    <td>{{ student.customer.get_contact_type_display}}</td>
+                    <td>{{ student.customer.contact }}</td>
+                    <td>{{ student.customer.name }}</td>
+                    {% get_approved_date student class_id as approved_date%}
+                    <td>{{ approved_date |date   }}</td>
+                    <td>{% get_score_ranking student class_id %}</td>
+                    <td>{%  get_have_class_time  student  class_id %}</td>
+                    <td>{% get_late_time student class_id%}</td>
+                    <td>{% get_unable_time student class_id%}</td>
+                    <td><a href="/student/upload-homework/{{ study_record.id }}">添加记录</a></td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

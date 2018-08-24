@@ -1,0 +1,81 @@
+{% extends 'index.html' %}
+{% block css %}
+    <style>
+        .study-record span {
+            font-size: 20px;
+        }
+    </style>
+{% endblock %}
+{% block table_content %}
+    <h1 class="page-header">作业管理</h1>
+    <div class="container study-record">
+     <ol class="breadcrumb">
+            <li><a href="{% url 'my_courses' %}">我的课程</a></li>
+            <li><a href="/student/homework-manage/{{ course_record.class_grade.id }}/">作业管理</a></li>
+            <li class="active">作业上交</li>
+        </ol>
+        <span style="color:indianred;">我的课程</span>
+        <span style="color: indianred;" class="pull-right">提交作业</span>
+        <hr>
+        <div class="form-group row">
+            <label class="col-lg-1 ">课程作业:</label>
+            <div class="col-lg-8">
+                <input type="text" value=" {{ course_record }}" class="form-control" disabled="disabled">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-1" style="width: 100px;">作业内容：</label>
+            <div class="col-lg-8">
+                <input type="text" value=" {{ course_record.content }}" class="form-control" disabled="disabled">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-2 ">作业内容：</label>
+            <div class="col-lg-12 ">
+                <textarea cols="30" rows="10" disabled="disabled"
+                          class="form-control"> {{ course_record.content }}</textarea>
+            </div>
+        </div>
+        <div>
+            <p> 已上传作业列表</p>
+            <ul id="student_uploaded">
+                {% for uploaded_file in uploaded_files %}
+                    <li>{{ uploaded_file }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <form id="StudentUpload" action="{% url 'homework_file_upload' study_record_id %}" class="dropzone">
+            <div style="text-align: center">
+                <h1 class="glyphicon glyphicon-book"style="font-size: 60px" ></h1>
+                <h4> 请将作业拖放至此处 </h4>
+                </div>
+                <div class="fallback">
+                    <input name="file" type="file" multiple/>
+                </div>
+        </form>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="/static/js/dropzone.js"></script>
+    <script>
+        Dropzone.options.autoDiscover = false;
+        Dropzone.options.StudentUpload = {
+            paramName: "file", // The name that will be used to transfer the file
+            maxFilesize: 3, // MB
+            maxFiles: 2,
+            parallelUploads: 1,
+            addRemoveLinks: true,
+            init: function () {
+                this.on("success", function (file, response) {
+                    var response = JSON.parse(response);
+                    if (!response.status) {
+                        alert(response.message)
+                    } else {
+                        $('#student_uploaded').append('<li>' + file.name + '</li>')
+                    }
+                });
+            }
+        };
+
+    </script>
+{% endblock %}
