@@ -16,6 +16,11 @@ def app_index(request):
     return render(request, 'kevinadmin/app_index.html', {'site': site})
 
 
+@login_required()
+def app_single(request, single_name):
+    return render(request, 'kevinadmin/app_index.html', {'site': site, 'single_name': single_name})
+
+
 def get_filter_result(request, queryset):
     """处理过滤条件，根据条件筛选数据"""
     filter_conditions = {}

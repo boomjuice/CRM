@@ -3,6 +3,7 @@ from . import views as vs
 
 urlpatterns = [
     url(r'^$', vs.app_index, name='admin_index'),
+    url(r'^(\w+)/$', vs.app_single, name='app_single'),
     url(r'^(\w+)/(\w+)/$', vs.table_obj_list, name="table_obj_list"),
     url(r'^(\w+)/(\w+)/add/$', vs.table_obj_add, name="table_obj_add"),
     url(r'^(\w+)/(\w+)/(\d+)/change/$', vs.table_obj_change, name="table_obj_change"),
